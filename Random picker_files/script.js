@@ -94,7 +94,7 @@ function generateEntryInfluencedRandomNumber(seed, decodedEntries) {
 
 const imageFilenames = [];
 for (let i = 1; i <= 156; i++) {
-  imageFilenames.push(`./icons/${i}.png`);
+  imageFilenames.push(`https://sprites.neocities.org/choice/icons/${i}.png`);
 }
 
 // Function to shuffle and trim the image array based on a seed.
@@ -193,7 +193,7 @@ async function displayVisualizer() {
     const imageElement = document.createElement("img");
     if (imageMap.hasOwnProperty(decodedEntries[i])) {
       // Use the hardcoded image.
-      imageElement.src = `./icons/${imageMap[decodedEntries[i]]}`;
+      imageElement.src = `https://sprites.neocities.org/choice/icons/${imageMap[decodedEntries[i]]}`;
     } else {
       // Use the shuffled image.
       imageElement.src = selectedImages[i];
