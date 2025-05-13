@@ -151,14 +151,27 @@ async function displayVisualizer() {
   const threadDetails = await (await fetch(`https://arch.b4k.dev/_/api/chan/thread/?board=vg&num=${params.thread}`)).json();
   const postDetails = threadDetails[(Object.keys(threadDetails)[0])].posts;
 
-  const postTimestamp = postDetails[(Object.keys(postDetails)[749])].timestamp;  // close enough
+  let post750 = postDetails[(Object.keys(postDetails)[749])];
 
-  const postIDs = Object.keys(postDetails).filter(p => !(postDetails[p].deleted === "1" && postDetails[p].timestamp_expired < postTimestamp)).slice(0, 750);
+  let i = 0;
+  let postIDs;
+  while (true) {
+    postIDs = Object.keys(postDetails).filter(p => !(postDetails[p].deleted === "1" && postDetails[p].timestamp_expired < post750.timestamp)).slice(0, 750);
+    if (postIDs[749] == post750.num) {
+      break;
+    }
+    i++;
+    if (i > 1000) {
+      return
+    }
+
+    post750 = postDetails[postIDs[749]]
+  }
+
   const seed = postIDs[749];  // 0 indexed, this is 750
 
   const validPostIDs = postIDs.filter(p => postDetails[p].comment?.includes(`>>${params.post}`))
   const decodedEntries = validPostIDs.map(p => postDetails[p].comment.replace(`>>${params.post}`, "").trim())
-
 
   console.log(`Seed is ${seed}`);
   console.log("So the options are:\n\n" + decodedEntries.join('\n'));
