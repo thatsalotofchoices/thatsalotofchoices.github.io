@@ -150,7 +150,10 @@ async function displayVisualizer() {
 
   const threadDetails = await (await fetch(`https://arch.b4k.dev/_/api/chan/thread/?board=vg&num=${params.thread}`)).json();
   const postDetails = threadDetails[(Object.keys(threadDetails)[0])].posts;
-  const postIDs = Object.keys(postDetails).slice(0,750);
+
+  const postTimestamp = postDetails[(Object.keys(postDetails)[749])].timestamp;  // close enough
+
+  const postIDs = Object.keys(postDetails).filter(p => !(postDetails[p].deleted === "1" && postDetails[p].timestamp_expired < postTimestamp)).slice(0, 750);
   const seed = postIDs[749];  // 0 indexed, this is 750
 
   const validPostIDs = postIDs.filter(p => postDetails[p].comment?.includes(`>>${params.post}`))
