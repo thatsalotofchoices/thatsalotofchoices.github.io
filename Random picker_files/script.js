@@ -156,7 +156,7 @@ async function displayVisualizer() {
   let i = 0;
   let postIDs;
   while (true) {
-    postIDs = Object.keys(postDetails).filter(p => !(postDetails[p].deleted === "1" && postDetails[p].timestamp_expired < post750.timestamp)).slice(0, 750);
+    postIDs = Object.keys(postDetails).filter(p => !(postDetails[p].deleted === "1" && postDetails[p].timestamp_expired < post750.timestamp));
     if (postIDs[749] == post750.num) {
       break;
     }
@@ -170,7 +170,7 @@ async function displayVisualizer() {
 
   const seed = postIDs[749];  // 0 indexed, this is 750
 
-  const validPostIDs = postIDs.filter(p => postDetails[p].comment?.includes(`>>${params.post}`))
+  const validPostIDs = postIDs.slice(0, 750).filter(p => postDetails[p].comment?.includes(`>>${params.post}`))
   const decodedEntries = validPostIDs.map(p => postDetails[p].comment.replace(`>>${params.post}`, "").trim())
 
   console.log(`Seed is ${seed}`);
